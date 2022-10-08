@@ -3,12 +3,6 @@ import Image from "next/image";
 const Home = () => {
   return (
     <>
-      <nav className="py-6 lg:px-52 px-12 bg-dark-blue">
-        <h2 className="capitalize font-semibold text-2xl text-sea-blue">
-          recon chain
-        </h2>
-      </nav>
-
       <div className="lg:px-52 px-12 lg:grid flex lg:grid-cols-2 flex-col-reverse h-2/3 items-center lg:py-20 pt-20 mb-5">
         <div>
           <h2 className="text-5xl font-semibold text-dark-blue my-3">
