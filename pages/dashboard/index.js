@@ -101,11 +101,11 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="flex lg:justify-end justify-center lg:w-4/5 w-full lg:px-0 px-12 mb-5 gap-x-3 mt-14 relative flex-wrap">
+      <div className="flex lg:justify-end justify-center lg:w-4/5 w-full lg:px-0 px-12 mb-5 gap-x-3 mt-14  flex-wrap">
         <div className="relative mb-5 flex items-center lg:w-80 w-full">
           <input
             type="text"
-            className="bg-[#E4E4E4]  rounded-md focus:outline-0 px-6 py-2 "
+            className="bg-[#E4E4E4]  rounded-md focus:outline-0 px-6 py-2  w-full"
             placeholder="Filter ID"
           />
           <Button className="rounded-md py-2 absolute right-0 ">
