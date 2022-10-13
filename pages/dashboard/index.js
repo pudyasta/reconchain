@@ -32,7 +32,7 @@ const Dashboard = () => {
             generate
           </button>
         </div>
-        <div className={`text-center  ${show ? `lg:mt-auto mt-20` : `m-auto`}`}>
+        <div className={`text-center  ${show ? `lg:mt-0 mt-20` : `m-auto`}`}>
           {!show ? (
             <Image
               src="/business.png"
