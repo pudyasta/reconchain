@@ -31,7 +31,6 @@ const Dashboard = () => {
   }, [shows]);
 
   const handleClick = (e) => {
-    alert("oeoe");
     e.preventDefault();
     setQR([]);
     setDataQr([]);
