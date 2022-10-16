@@ -1,12 +1,44 @@
 import Image from "next/future/image";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../../components/Button/Button";
 import { Icon } from "@iconify/react";
+import Qrcode from "./components/Qrcode";
+import QRCode from "qrcode";
 const Dashboard = () => {
   const [show, setShow] = useState(false);
-  const handleClick = () => {
-    setShow(!show);
+  const [dataQr, setDataQr] = useState(false);
+  const [shows, setShows] = useState();
+  const count = useRef();
+  const [qr, setQR] = useState([]);
+
+  useEffect(() => {
+    for (let i = 0; i < count.current.value; i++) {
+      const day = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      const rand = Math.ceil(Math.random() * 100000);
+      const id = "RC" + day + month + year + rand;
+      QRCode.toDataURL(id)
+        .then((url) => {
+          qr.push(url);
+          dataQr.push(id);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    setShows(0);
+  }, [shows]);
+
+  const handleClick = (e) => {
+    alert("oeoe");
+    e.preventDefault();
+    setQR([]);
+    setDataQr([]);
+    setShows(count.current.value);
+    setShow(true);
   };
+
   return (
     <>
       <div
@@ -21,16 +53,19 @@ const Dashboard = () => {
           <h2 className="text-lg font-medium text-dark-blue">
             Input how many QR codes you want to generate
           </h2>
-          <input
-            type="number"
-            className="bg-[#E4E4E4] mt-5 py-3 lg:w-1/2 w-full rounded-md focus:outline-0 px-6 block"
-          />
-          <button
-            className="bg-sea-blue mt-5 py-3 lg:w-1/2 w-full rounded-md text-white hover:bg-[#448DF8] active:bg-[#448DF8] capitalize "
-            onClick={handleClick}
-          >
-            generate
-          </button>
+          <form onSubmit={handleClick}>
+            <input
+              type="number"
+              className="bg-[#E4E4E4] mt-5 py-3 lg:w-1/2 w-full rounded-md focus:outline-0 px-6 block"
+              ref={count}
+            />
+            <button
+              type="submit"
+              className="bg-sea-blue mt-5 py-3 lg:w-1/2 w-full rounded-md text-white hover:bg-[#448DF8] active:bg-[#448DF8] capitalize "
+            >
+              generate
+            </button>
+          </form>
         </div>
         <div className={`text-center  ${show ? `lg:mt-0 mt-20` : `m-auto`}`}>
           {!show ? (
@@ -47,48 +82,9 @@ const Dashboard = () => {
                 QR code created successfully
               </h2>
               <div className="grid lg:grid-cols-4 grid-cols-2 gap-10 ">
-                <div className="flex items-center flex-col ">
-                  <Image src="/qr.png" width={80} height={80} alt="qr code" />
-                  <h2 className="lg:text-lg text-medium font-medium text-dark-blue  my-2">
-                    IDX3415777909
-                  </h2>
-                  <input type="checkbox" className="lg:w-5 lg:w-5 w-6 h-6" />
-                </div>
-                <div className="flex items-center flex-col ">
-                  <Image src="/qr.png" width={80} height={80} alt="qr code" />
-                  <h2 className="lg:text-lg text-medium font-medium text-dark-blue  my-2">
-                    IDX3415777909
-                  </h2>
-                  <input type="checkbox" className="lg:w-5 lg:w-5 w-6 h-6" />
-                </div>
-                <div className="flex items-center flex-col ">
-                  <Image src="/qr.png" width={80} height={80} alt="qr code" />
-                  <h2 className="lg:text-lg text-medium font-medium text-dark-blue  my-2">
-                    IDX3415777909
-                  </h2>
-                  <input type="checkbox" className="lg:w-5 lg:w-5 w-6 h-6" />
-                </div>
-                <div className="flex items-center flex-col ">
-                  <Image src="/qr.png" width={80} height={80} alt="qr code" />
-                  <h2 className="lg:text-lg text-medium font-medium text-dark-blue  my-2">
-                    IDX3415777909
-                  </h2>
-                  <input type="checkbox" className="lg:w-5 lg:w-5 w-6 h-6" />
-                </div>
-                <div className="flex items-center flex-col ">
-                  <Image src="/qr.png" width={80} height={80} alt="qr code" />
-                  <h2 className="lg:text-lg text-medium font-medium text-dark-blue  my-2">
-                    IDX3415777909
-                  </h2>
-                  <input type="checkbox" className="lg:w-5 lg:w-5 w-6 h-6" />
-                </div>
-                <div className="flex items-center flex-col ">
-                  <Image src="/qr.png" width={80} height={80} alt="qr code" />
-                  <h2 className="lg:text-lg text-medium font-medium text-dark-blue  my-2">
-                    IDX3415777909
-                  </h2>
-                  <input type="checkbox" className="lg:w-5 lg:w-5 w-6 h-6" />
-                </div>
+                {qr.map((id, i) => (
+                  <Qrcode svg={id} key={i} text={dataQr[i]} />
+                ))}
               </div>
               <button className="bg-dark-blue mr-5 mt-5 py-3  lg:w-2/5 w-full rounded-md text-white hover:bg-[#448DF8] active:bg-[#448DF8] capitalize inline">
                 print all
