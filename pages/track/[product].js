@@ -13,7 +13,12 @@ const Home = () => {
           </h2>
         </div>
         <div className="text-center">
-          <Image src="/destination.png" width={550} height={400} />
+          <Image
+            src="/destination.png"
+            width={550}
+            height={400}
+            alt="man hanging his phone "
+          />
         </div>
       </div>
 
