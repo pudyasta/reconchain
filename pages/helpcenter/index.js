@@ -33,7 +33,12 @@ const HelpCenter = () => {
           </button>
         </div>
         <div className="text-center">
-          <Image src="/Feedback.png" width={600} height={550} />
+          <Image
+            src="/Feedback.png"
+            width={600}
+            height={550}
+            alt="two people interacting trough social media"
+          />
         </div>
       </div>
     </>

@@ -82,10 +82,10 @@ const Dashboard = () => {
             />
             {error ? (
               <p className="text-red-600 font-medium mt-2">
-                Value you've inputed is invalid
+                Value you&#39;ve inputed is invalid
               </p>
             ) : (
-              ""
+              " "
             )}
             <button
               type="submit"
