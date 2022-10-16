@@ -4,12 +4,14 @@ import Button from "../../components/Button/Button";
 import { Icon } from "@iconify/react";
 import Qrcode from "./components/Qrcode";
 import QRCode from "qrcode";
+import swal from "sweetalert";
 const Dashboard = () => {
   const [show, setShow] = useState(false);
   const [dataQr, setDataQr] = useState(false);
   const [shows, setShows] = useState();
   const count = useRef();
   const [qr, setQR] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     for (let i = 0; i < count.current.value; i++) {
@@ -27,15 +29,33 @@ const Dashboard = () => {
           console.error(err);
         });
     }
-    setShows(0);
+
+    setShows(parseInt(count.current.value));
   }, [shows]);
 
   const handleClick = (e) => {
     e.preventDefault();
-    setQR([]);
-    setDataQr([]);
-    setShows(count.current.value);
-    setShow(true);
+    const c = count.current.value;
+    if (c > 0) {
+      setError(false);
+      swal(
+        `Are you sure you want to print ${c} ${
+          parseInt(c) > 1 ? "QR's" : "QR"
+        }?`,
+        {
+          buttons: ["Cancel", true],
+        }
+      ).then((val) => {
+        if (val == true) {
+          setShows(count.current.value);
+          setQR([]);
+          setDataQr([]);
+          setShow(true);
+        }
+      });
+    } else {
+      setError(true);
+    }
   };
 
   return (
@@ -55,9 +75,18 @@ const Dashboard = () => {
           <form onSubmit={handleClick}>
             <input
               type="number"
-              className="bg-[#E4E4E4] mt-5 py-3 lg:w-1/2 w-full rounded-md focus:outline-0 px-6 block"
+              className={`bg-[#E4E4E4] mt-5 py-3 lg:w-1/2 w-full rounded-md focus:outline-0 px-6 block ${
+                error ? ` border-2 border-red-400` : ""
+              }`}
               ref={count}
             />
+            {error ? (
+              <p className="text-red-600 font-medium mt-2">
+                Value you've inputed is invalid
+              </p>
+            ) : (
+              ""
+            )}
             <button
               type="submit"
               className="bg-sea-blue mt-5 py-3 lg:w-1/2 w-full rounded-md text-white hover:bg-[#448DF8] active:bg-[#448DF8] capitalize "
@@ -85,7 +114,7 @@ const Dashboard = () => {
                   <Qrcode svg={id} key={i} text={dataQr[i]} />
                 ))}
               </div>
-              <button className="bg-dark-blue mr-5 mt-5 py-3  lg:w-2/5 w-full rounded-md text-white hover:bg-[#448DF8] active:bg-[#448DF8] capitalize inline">
+              <button className="bg-dark-blue mr-5 mt-5 py-3  lg:w-2/5 w-full rounded-md text-white hover:bg-[#252336] active:bg-[#252336] capitalize inline">
                 print all
               </button>
               <Button type="contain" className="rounded-md lg:w-2/5 w-full">
