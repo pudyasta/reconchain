@@ -19,11 +19,16 @@ const Dashboard = () => {
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
       const rand = Math.ceil(Math.random() * 100000);
-      const id = "RC" + day + month + year + rand;
+      const id =
+        "https://reconchain-git-develop-pudyasta.vercel.app/track/RC" +
+        day +
+        month +
+        year +
+        rand;
       QRCode.toDataURL(id)
         .then((url) => {
           qr.push(url);
-          dataQr.push(id);
+          dataQr.push(id.split("/").at(-1));
         })
         .catch((err) => {
           console.error(err);
