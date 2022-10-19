@@ -21,6 +21,7 @@ const Dashboard = () => {
       const rand = Math.ceil(Math.random() * 100000);
       const id =
         "https://reconchain.vercel.app/track/RC" + day + month + year + rand;
+
       QRCode.toDataURL(id)
         .then((url) => {
           qr.push(url);
