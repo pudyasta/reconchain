@@ -3,7 +3,7 @@ import React from "react";
 const Rules = ({ num, text }) => {
   return (
     <>
-      <p className="text-lg">
+      <p className="lg:text-lg lg:ml-8 ml-5">
         {num ? num : "1"}
         {". "}
         {!text
