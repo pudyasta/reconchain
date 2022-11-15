@@ -13,7 +13,10 @@ const ToPrint = React.forwardRef((props, ref) => {
       </div>
       <div className="grid grid-cols-4  ">
         {qr.map((id, i) => (
-          <div className="flex flex-col m-auto items-center border-b-2 mt-10 mx-8">
+          <div
+            key={i}
+            className="flex flex-col m-auto items-center border-b-2 mt-10 mx-8"
+          >
             <Image src={svg[i]} width={100} height={100} alt="qr code" />
             <h2 className="lg:text-lg text-medium font-medium text-dark-blue  my-2">
               {id}
