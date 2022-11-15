@@ -5,16 +5,19 @@ import { Icon } from "@iconify/react";
 import Qrcode from "./components/Qrcode";
 import QRCode from "qrcode";
 import swal from "sweetalert";
+import ReactToPrint from "react-to-print";
+import ToPrint from "./components/ToPrint";
 const Dashboard = () => {
   const [show, setShow] = useState(false);
   const [dataQr, setDataQr] = useState(false);
   const [shows, setShows] = useState();
   const count = useRef();
+  const code = useRef();
   const [qr, setQR] = useState([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    for (let i = 0; i < count.current.value; i++) {
+    for (let i = 0; i < shows; i++) {
       const day = new Date().getDate();
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
@@ -31,13 +34,17 @@ const Dashboard = () => {
         });
     }
 
-    setShows(parseInt(count.current.value));
+    setShows(0);
   }, [shows]);
 
   const handleClick = (e) => {
     e.preventDefault();
     const c = count.current.value;
-    if (c > 0) {
+
+    if (c > 20) {
+      setError("The maximum value for this action is 20");
+    } else if (c > 0 && c < 21) {
+      console.log("first");
       setError(false);
       swal(
         `Are you sure you want to print ${c} ${
@@ -48,21 +55,22 @@ const Dashboard = () => {
         }
       ).then((val) => {
         if (val == true) {
-          setShows(count.current.value);
+          setShows(c);
           setQR([]);
           setDataQr([]);
           setShow(true);
         }
       });
     } else {
-      setError(true);
+      setError("The value you inputed is Invalid");
     }
   };
 
+  const handlePrint = () => {};
   return (
     <>
       <div
-        className={`lg:px-52 px-12 lg:grid flex lg:grid-cols-2 ${
+        className={`md:px-52 px-12 lg:grid flex lg:grid-cols-2 ${
           !show ? `flex-col-reverse` : `flex-col`
         } min-h-[75vh] items-center lg:py-20 pt-20 mb-5`}
       >
@@ -77,14 +85,12 @@ const Dashboard = () => {
             <input
               type="number"
               className={`bg-[#E4E4E4] mt-5 py-3 lg:w-1/2 w-full rounded-md focus:outline-0 px-6 block ${
-                error ? ` border-2 border-red-400` : ""
+                error !== false ? ` border-2 border-red-400` : ""
               }`}
               ref={count}
             />
-            {error ? (
-              <p className="text-red-600 font-medium mt-2">
-                Value you&#39;ve inputed is invalid
-              </p>
+            {error !== false ? (
+              <p className="text-red-600 font-medium mt-2">{error}</p>
             ) : (
               " "
             )}
@@ -110,14 +116,25 @@ const Dashboard = () => {
               <h2 className="text-xl font-medium text-dark-blue mb-10">
                 QR code created successfully
               </h2>
-              <div className="grid lg:grid-cols-4 grid-cols-2 gap-10 ">
+              <div className="grid md:grid-cols-4 grid-cols-2 gap-10 ">
                 {qr.map((id, i) => (
                   <Qrcode svg={id} key={i} text={dataQr[i]} />
                 ))}
               </div>
-              <button className="bg-dark-blue mr-5 mt-5 py-3  lg:w-2/5 w-full rounded-md text-white hover:bg-[#252336] active:bg-[#252336] capitalize inline">
-                print all
-              </button>
+              <div className="hidden">
+                <ToPrint ref={code} qr={dataQr} svg={qr} />
+              </div>
+              <ReactToPrint
+                trigger={() => {
+                  return (
+                    <button className="bg-dark-blue mr-5 mt-5 py-3  lg:w-2/5 w-full rounded-md text-white hover:bg-[#252336] active:bg-[#252336] capitalize inline">
+                      print all
+                    </button>
+                  );
+                }}
+                content={() => code.current}
+              />
+
               <Button type="contain" className="rounded-md lg:w-2/5 w-full">
                 Print selected
               </Button>
